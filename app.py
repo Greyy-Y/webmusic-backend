@@ -393,10 +393,14 @@ def update_comment_disliked():
 def update_follow():
     following = request.json.get("following") 
     follower = request.json.get("follower")
+    following_detail = list(db.users.find({"user_name":following},{"_id":0,"user_pwd":0,"liked_music":0,"created_musiclist":0,
+    "collected_musiclist":0}))[0]
+    follower_detail = list(db.users.find({"user_name":follower},{"_id":0,"user_pwd":0,"liked_music":0,"created_musiclist":0,
+    "collected_musiclist":0}))[0]
     type = request.json.get("type")
     if(type == "follow"):
-        db.users.find_one_and_update({"user_name":follower},{"$addToSet":{"following":following}})
-        db.users.find_one_and_update({"user_name":following},{"$addToSet":{"follower":follower}})
+        db.users.find_one_and_update({"user_name":follower},{"$addToSet":{"following":following_detail}})
+        db.users.find_one_and_update({"user_name":following},{"$addToSet":{"follower":follower_detail}})
     else:
         db.users.find_one_and_update({"user_name":follower},{"$pull":{"following":following}})
         db.users.find_one_and_update({"user_name":following},{"$pull":{"follower":follower}})
