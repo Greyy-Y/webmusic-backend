@@ -1,0 +1,8 @@
+.env/
+.vscode/
+webmusic/
+.idea/
+__pycache__/
+database.py
+test.py
+config.py
